@@ -8,7 +8,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.urman.hibernate.dao")
+@EnableJpaRepositories(basePackages = "com.cynosure.dao")
 public class DatabaseConfig {
 
 

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 @SpringBootApplication
 @ComponentScan({"com.cynosure.*"})
-@EntityScan(basePackages = "com.cynosure.hibernate.pojo")
+@EntityScan(basePackages = "com.cynosure.pojo")
 public class CynosureApplication {
 
     public static void main(String[] args) {
