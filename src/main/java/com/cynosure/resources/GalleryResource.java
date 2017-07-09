@@ -14,21 +14,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cynosure.services.FileDownloadService;
 import com.cynosure.services.FileUploadService;
 import com.cynosure.util.BaseException;
 
 import net.sf.json.util.JSONStringer;
 
-@RequestMapping(value = "/upload/")
+@RequestMapping(value = "/v1/gallery")
 @RestController
-public class FileUploadResource {
+public class GalleryResource {
 
-	private static final Logger LOGGER = Logger.getLogger(FileUploadResource.class);
+	private static final Logger LOGGER = Logger.getLogger(GalleryResource.class);
 
 	@Autowired
 	private FileUploadService fileUploadService;
 
-	@RequestMapping(value = "/gallery", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, method = RequestMethod.POST)
+	@Autowired
+	private FileDownloadService fileDownloadService;
+
+	@RequestMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, method = RequestMethod.POST)
 	public ResponseEntity<String> uploadFile(@RequestParam("fileData") MultipartFile bodyPart) {
 		String fileName = bodyPart.getOriginalFilename();
 		InputStream inputStream = null;
@@ -44,6 +48,11 @@ public class FileUploadResource {
 
 		String jsonResponse = new JSONStringer().object().key("response").value("success").endObject().toString();
 		return new ResponseEntity<String>(jsonResponse, HttpStatus.ACCEPTED);
+	}
+
+	@RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	public String getGalleryList() {
+		return fileDownloadService.getGalleryImagesList();
 	}
 
 	public static long getSize(InputStream uploadedInputStream) {
