@@ -1,5 +1,6 @@
 package com.cynosure.resources;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cynosure.services.SubscriptionService;
@@ -43,5 +45,23 @@ public class SubscriptionResource {
 		}
 
 		return new ResponseEntity<JSONObject>(HttpStatus.NO_CONTENT);
+	}
+	
+	@RequestMapping(value = "/remove", method = RequestMethod.GET)
+	public ResponseEntity<String> removeSubscriber(@RequestParam("email") String emailId) {
+
+		LOGGER.setLevel(Level.ERROR);
+		try {
+			if (StringUtils.isNotEmpty(emailId)) {
+				subscriptionService.removeSubscriber(emailId);
+			} else {
+				throw new BaseException("Could not Remove");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return new ResponseEntity<String>("Something went wrong, Please contact the administrator.", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 	}
 }
