@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import com.cynosure.services.CommonService;
 
 @Entity
-@Table(name="t_movie_details", schema="cynosure-schema")
+@Table(name="t_movie_details", schema="[cynosure-schema]")
 public class Movie {
 
 	@Id

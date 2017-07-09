@@ -3,10 +3,9 @@ package com.cynosure.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.cynosure.pojo.Movie;
+import com.cynosure.pojo.Product;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long>{
+public interface ProductRepository extends JpaRepository<Product, Long>{
 
-	
 }
