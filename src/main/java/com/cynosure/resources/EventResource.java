@@ -68,7 +68,7 @@ public class EventResource {
 			return new ResponseEntity<Object>(event, HttpStatus.CREATED);
 		} catch (Exception e) {
 			ErrorView errorView = new ErrorView(
-					"Error while getting all events");
+					"Error while creating  event");
 			return new ResponseEntity<Object>(errorView, HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -33,7 +33,7 @@ public class EventRegisteration {
 	private int  amountCharged;
 	
 	@Column(name="regsitration_date")
-	private Timestamp  regsitrationDate;
+	private Timestamp  registrationDate;
 
 	public long getRegisterationId() {
 		return registerationId;
@@ -83,12 +83,12 @@ public class EventRegisteration {
 		this.amountCharged = amountCharged;
 	}
 
-	public Timestamp getRegsitrationDate() {
-		return regsitrationDate;
+	public Timestamp getRegistrationDate() {
+		return registrationDate;
 	}
 
-	public void setRegsitrationDate(Timestamp regsitrationDate) {
-		this.regsitrationDate = regsitrationDate;
+	public void setRegistrationDate(Timestamp registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 }
