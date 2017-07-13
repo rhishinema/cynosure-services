@@ -6,14 +6,16 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cynosure.dao.SubscriberRepository;
 import com.cynosure.pojo.Subscriber;
+import com.cynosure.resources.SubscriptionResource;
 
-@Component
-public class SendMailService {
+@Component("sendGridMailService")
+public class SendGridMailService implements ImailService{
 
 	@Autowired
 	SubscriberRepository subscriberRepository;
@@ -21,7 +23,10 @@ public class SendMailService {
 	private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
 	private static final String SMTP_AUTH_USER = "azure_cbcdecab9df232f188cca68f652b4188@azure.com";
 	private static final String SMTP_AUTH_PWD = "Cyno@sure123";
+	
+	public static Logger LOGGER = Logger.getLogger(SubscriptionResource.class);
 
+	@Override
 	public void sendWelcomeMail(String emailId) throws Exception {
 		Properties properties = new Properties();
 		properties.put("mail.transport.protocol", "smtp");
@@ -56,9 +61,10 @@ public class SendMailService {
 		transport.sendMessage(message, message.getAllRecipients());
 		// Close the connection.
 		transport.close();
-
+		LOGGER.info("Welcome mail sent");
 	}
 
+	@Override
 	public void sendDailyMail() throws Exception {
 
 		List<Subscriber> subscribers = subscriberRepository.findAll();
@@ -102,7 +108,7 @@ public class SendMailService {
 				transport.close();
 			}
 		}
-
+		LOGGER.info("Dail mails sent");
 	}
 
 	private class SMTPAuthenticator extends javax.mail.Authenticator {
