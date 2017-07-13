@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.cynosure.services.CommonService;
 
 @Entity
@@ -40,6 +42,9 @@ public class Movie {
 	
 	@Transient
 	private String releaseDateStr;
+	
+	@Transient
+	private String movieBannerFullUrl;
 
 	public Long getMovieId() {
 		return movieId;
@@ -106,5 +111,17 @@ public class Movie {
 
 	public void setReleaseDateStr(String releaseDateStr) {
 		this.releaseDateStr = releaseDateStr;
+	}
+
+	public String getMovieBannerFullUrl() {
+		if(StringUtils.isEmpty(moviebannerUrl)){
+			return "";
+		}else{
+			return "https://cynosureblob.blob.core.windows.net/cynosure-movies/" + moviebannerUrl;
+		}
+	}
+
+	public void setMovieBannerFullUrl(String movieBannerFullUrl) {
+		this.movieBannerFullUrl = movieBannerFullUrl;
 	}
 }

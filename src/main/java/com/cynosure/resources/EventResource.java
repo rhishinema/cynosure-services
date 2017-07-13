@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cynosure.pojo.Event;
@@ -35,11 +35,9 @@ public class EventResource {
 						event.setEventUrl(
 								"https://cynosureblob.blob.core.windows.net/cynosure-events/FB_IMG_1499944022229.jpg");
 					} else if (event.getEventId() == 11) {
-						event.setEventUrl(
-								"https://cynosureblob.blob.core.windows.net/cynosure-events/OpenTheatre.png");
+						event.setEventUrl("https://cynosureblob.blob.core.windows.net/cynosure-events/OpenTheatre.png");
 					} else if (event.getEventId() == 12) {
-						event.setEventUrl(
-								"https://cynosureblob.blob.core.windows.net/cynosure-events/WaterFire.png");
+						event.setEventUrl("https://cynosureblob.blob.core.windows.net/cynosure-events/WaterFire.png");
 					} else {
 						event.setEventUrl(
 								"https://cynosureblob.blob.core.windows.net/cynosure-events/FB_IMG_1499944022229.jpg");
@@ -53,7 +51,7 @@ public class EventResource {
 		}
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/{eventId}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Object> getEvent(@PathVariable long eventId) {
 		try {
 			Event event = eventService.getEvent(eventId);
@@ -64,19 +62,15 @@ public class EventResource {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> createEvent(@RequestParam String eventName, @RequestParam String eventDescription,
-			@RequestParam String eventVenue, @RequestParam int entryFee, @RequestParam String registrationStartDate,
-			@RequestParam String registrationEndDate) {
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<Object> createEvent(@RequestBody Event event) {
 		try {
-			Event event = new Event();
-			event.setEventName(eventName);
-			event.setEventDescription(eventDescription);
-			event.setEventVenue(eventVenue);
-			event.setEntryFee(entryFee);
-			event.setRegistrationStartDate(CommonService.getTimeStampFromStr(registrationStartDate));
-			event.setRegistrationEndDate(CommonService.getTimeStampFromStr(registrationEndDate));
-			eventService.createEvent(event);
+			if (event != null) {
+				event.setEventDate(CommonService.getTimeStampFromStr(event.getEventDateFormat()));
+				event.setRegistrationStartDate(CommonService.getTimeStampFromStr(event.getRegistrationEndDateFormat()));
+				event.setRegistrationEndDate(CommonService.getTimeStampFromStr(event.getRegistrationEndDateFormat()));
+				eventService.createEvent(event);
+			}
 			return new ResponseEntity<Object>(event, HttpStatus.CREATED);
 		} catch (Exception e) {
 			ErrorView errorView = new ErrorView("Error while creating  event");

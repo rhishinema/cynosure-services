@@ -21,7 +21,7 @@ public class SubscriptionService {
 	SubscriberRepository subscriberRepository;
 
 	@Autowired
-	SendMailService sendMailService;
+	ImailService mailJetMailService;
 
 	public static Logger LOGGER = Logger.getLogger(SubscriptionResource.class);
 
@@ -33,7 +33,7 @@ public class SubscriptionService {
 			subscriber.setEmail(jsonObject.getString(CommonConstants.SUBSCRIBER_EMAIL));
 			subscriberRepository.save(subscriber);
 			try {
-				sendMailService.sendWelcomeMail(jsonObject.getString(CommonConstants.SUBSCRIBER_EMAIL));
+				mailJetMailService.sendWelcomeMail(jsonObject.getString(CommonConstants.SUBSCRIBER_EMAIL));
 			} catch (Exception e) {
 				LOGGER.error(e.getMessage());
 				throw new BaseException("Error Sending Email");

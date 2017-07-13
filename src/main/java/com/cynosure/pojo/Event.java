@@ -9,45 +9,60 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.cynosure.services.CommonService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name="t_event_detail", schema="[cynosure-schema]")
+@Table(name = "t_event_detail", schema = "[cynosure-schema]")
 public class Event {
 
 	@Id
 	@GeneratedValue
-	@Column(name="event_id")
-	private long EventId;
-	
-	@Column(name="event_name")
+	@Column(name = "event_id")
+	private long eventId;
+
+	@Column(name = "event_name")
 	private String eventName;
-	
-	@Column(name="event_description")
+
+	@Column(name = "event_description")
 	private String eventDescription;
-	
-	@Column(name="event_date")
-	private Timestamp  eventDate;
-	
-	@Column(name="event_venue")
+
+	@JsonIgnore
+	@Column(name = "event_date")
+	private Timestamp eventDate;
+
+	@Column(name = "event_venue")
 	private String eventVenue;
-	
-	@Column(name="registration_start_dt")
+
+	@JsonIgnore
+	@Column(name = "registration_start_dt")
 	private Timestamp registrationStartDate;
-	
-	@Column(name="registration_end_dt")
+
+	@JsonIgnore
+	@Column(name = "registration_end_dt")
 	private Timestamp registrationEndDate;
-	
-	@Column(name="entry_fee")
-	private int  entryFee;
-	
+
+	@Column(name = "entry_fee")
+	private int entryFee;
+
 	@Transient
 	private String eventUrl;
 
+	@Transient
+	private String eventDateFormat;
+
+	@Transient
+	private String registrationStartDateFormat;
+
+	@Transient
+	private String registrationEndDateFormat;
+
 	public long getEventId() {
-		return EventId;
+		return eventId;
 	}
 
 	public void setEventId(long eventId) {
-		EventId = eventId;
+		this.eventId = eventId;
 	}
 
 	public String getEventName() {
@@ -105,11 +120,45 @@ public class Event {
 	public void setEntryFee(int entryFee) {
 		this.entryFee = entryFee;
 	}
-	
+
+	public String getRegistrationStartDateFormat() {
+		if (registrationStartDate != null) {
+			registrationStartDateFormat = CommonService.getTimeStampStr(registrationStartDate);
+		}
+
+		return registrationStartDateFormat;
+	}
+
+	public void setRegistrationStartDateFormat(String registrationStartDateFormat) {
+		this.registrationStartDateFormat = registrationStartDateFormat;
+	}
+
+	public String getRegistrationEndDateFormat() {
+		if (registrationEndDate != null) {
+			registrationEndDateFormat = CommonService.getTimeStampStr(registrationEndDate);
+		}
+		return registrationEndDateFormat;
+	}
+
+	public void setRegistrationEndDateFormat(String registrationEndDateFormat) {
+		this.registrationEndDateFormat = registrationEndDateFormat;
+	}
+
+	public void setEventDateFormat(String eventDateFormat) {
+		this.eventDateFormat = eventDateFormat;
+	}
+
+	public String getEventDateFormat() {
+		if (eventDate != null) {
+			eventDateFormat = CommonService.getTimeStampStr(eventDate);
+		}
+		return eventDateFormat;
+	}
+
 	public void setEventUrl(String eventUrl) {
 		this.eventUrl = eventUrl;
 	}
-	
+
 	public String getEventUrl() {
 		return eventUrl;
 	}
