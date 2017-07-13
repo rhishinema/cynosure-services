@@ -15,7 +15,7 @@ public class DailyMailScheduler {
 	
 	public static Logger LOGGER = Logger.getLogger(DailyMailScheduler.class);
 	
-	@Scheduled(cron="0 0 * * *")
+	@Scheduled(cron="0 0 0 * * ?")
     public void sendDailyMail() {
         try {
         	LOGGER.info("Sending Daily Mail");
