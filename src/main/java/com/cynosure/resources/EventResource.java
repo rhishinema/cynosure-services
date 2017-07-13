@@ -2,6 +2,7 @@ package com.cynosure.resources;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +29,26 @@ public class EventResource {
 	public ResponseEntity<Object> getAllEvents() {
 		try {
 			List<Event> allEventsList = eventService.getAllEvents();
-			return new ResponseEntity<Object>(new EventView(allEventsList),
-					HttpStatus.ACCEPTED);
+			if (CollectionUtils.isNotEmpty(allEventsList)) {
+				for (Event event : allEventsList) {
+					if (event.getEventId() == 10) {
+						event.setEventUrl(
+								"https://cynosureblob.blob.core.windows.net/cynosure-events/FB_IMG_1499944022229.jpg");
+					} else if (event.getEventId() == 11) {
+						event.setEventUrl(
+								"https://cynosureblob.blob.core.windows.net/cynosure-events/OpenTheatre.png");
+					} else if (event.getEventId() == 12) {
+						event.setEventUrl(
+								"https://cynosureblob.blob.core.windows.net/cynosure-events/WaterFire.png");
+					} else {
+						event.setEventUrl(
+								"https://cynosureblob.blob.core.windows.net/cynosure-events/FB_IMG_1499944022229.jpg");
+					}
+				}
+			}
+			return new ResponseEntity<Object>(new EventView(allEventsList), HttpStatus.ACCEPTED);
 		} catch (Exception e) {
-			ErrorView errorView = new ErrorView(
-					"Error while getting all events");
+			ErrorView errorView = new ErrorView("Error while getting all events");
 			return new ResponseEntity<Object>(errorView, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -49,10 +65,8 @@ public class EventResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> createEvent(@RequestParam String eventName,
-			@RequestParam String eventDescription,
-			@RequestParam String eventVenue, @RequestParam int entryFee,
-			@RequestParam String registrationStartDate,
+	public ResponseEntity<Object> createEvent(@RequestParam String eventName, @RequestParam String eventDescription,
+			@RequestParam String eventVenue, @RequestParam int entryFee, @RequestParam String registrationStartDate,
 			@RequestParam String registrationEndDate) {
 		try {
 			Event event = new Event();
@@ -60,15 +74,12 @@ public class EventResource {
 			event.setEventDescription(eventDescription);
 			event.setEventVenue(eventVenue);
 			event.setEntryFee(entryFee);
-			event.setRegistrationStartDate(CommonService
-					.getTimeStampFromStr(registrationStartDate));
-			event.setRegistrationEndDate(CommonService
-					.getTimeStampFromStr(registrationEndDate));
+			event.setRegistrationStartDate(CommonService.getTimeStampFromStr(registrationStartDate));
+			event.setRegistrationEndDate(CommonService.getTimeStampFromStr(registrationEndDate));
 			eventService.createEvent(event);
 			return new ResponseEntity<Object>(event, HttpStatus.CREATED);
 		} catch (Exception e) {
-			ErrorView errorView = new ErrorView(
-					"Error while creating  event");
+			ErrorView errorView = new ErrorView("Error while creating  event");
 			return new ResponseEntity<Object>(errorView, HttpStatus.BAD_REQUEST);
 		}
 	}

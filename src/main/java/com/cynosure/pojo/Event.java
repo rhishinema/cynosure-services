@@ -7,9 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name="t_event", schema="[cynosure-schema]")
+@Table(name="t_event_detail", schema="[cynosure-schema]")
 public class Event {
 
 	@Id
@@ -37,6 +38,9 @@ public class Event {
 	
 	@Column(name="entry_fee")
 	private int  entryFee;
+	
+	@Transient
+	private String eventUrl;
 
 	public long getEventId() {
 		return EventId;
@@ -102,4 +106,11 @@ public class Event {
 		this.entryFee = entryFee;
 	}
 	
+	public void setEventUrl(String eventUrl) {
+		this.eventUrl = eventUrl;
+	}
+	
+	public String getEventUrl() {
+		return eventUrl;
+	}
 }

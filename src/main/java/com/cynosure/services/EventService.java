@@ -1,5 +1,6 @@
 package com.cynosure.services;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class EventService {
 	}
 
 	public void createEvent(Event event) {
+		event.setEventDate(new Timestamp(System.currentTimeMillis())); 
+		event.setRegistrationEndDate(new Timestamp(System.currentTimeMillis()));
+		event.setRegistrationStartDate(new Timestamp(System.currentTimeMillis())); 
 		eventRepository.save(event);
 	}
 
