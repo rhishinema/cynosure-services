@@ -7,15 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.cynosure.services.CommonService;
 
 @Entity
-@Table(name="t_event", schema="[cynosure-schema]")
+@Table(name="t_event_detail", schema="[cynosure-schema]")
 public class Event {
 
 	@Id
 	@GeneratedValue
 	@Column(name="event_id")
-	private long EventId;
+	private long eventId;
 	
 	@Column(name="event_name")
 	private String eventName;
@@ -38,12 +41,21 @@ public class Event {
 	@Column(name="entry_fee")
 	private int  entryFee;
 
+	@Transient
+	private String eventDateFormat;
+	
+	@Transient
+	private String registrationStartDateFormat;
+	
+	@Transient
+	private String registrationEndDateFormat;
+	
 	public long getEventId() {
-		return EventId;
+		return eventId;
 	}
 
 	public void setEventId(long eventId) {
-		EventId = eventId;
+		this.eventId = eventId;
 	}
 
 	public String getEventName() {
@@ -66,6 +78,7 @@ public class Event {
 		return eventDate;
 	}
 
+	
 	public void setEventDate(Timestamp eventDate) {
 		this.eventDate = eventDate;
 	}
@@ -101,5 +114,40 @@ public class Event {
 	public void setEntryFee(int entryFee) {
 		this.entryFee = entryFee;
 	}
+
+	public String getRegistrationStartDateFormat() {
+		if(registrationStartDate != null){
+			registrationStartDateFormat = CommonService.getTimeStampStr(registrationStartDate);
+		}
+	
+		return registrationStartDateFormat;
+	}
+
+	public void setRegistrationStartDateFormat(String registrationStartDateFormat) {
+			this.registrationStartDateFormat = registrationStartDateFormat;
+	}
+
+	public String getRegistrationEndDateFormat() {
+		if(registrationEndDate != null){
+			registrationEndDateFormat = CommonService.getTimeStampStr(registrationEndDate);
+		}
+		return registrationEndDateFormat;
+	}
+
+	public void setRegistrationEndDateFormat(String registrationEndDateFormat) {
+		this.registrationEndDateFormat = registrationEndDateFormat;
+	}
+
+	public void setEventDateFormat(String eventDateFormat) {
+		this.eventDateFormat = eventDateFormat;
+	}
+
+	public String getEventDateFormat() {
+		if(eventDate != null){
+			eventDateFormat = CommonService.getTimeStampStr(eventDate);
+		}
+		return eventDateFormat;
+	}
+	
 	
 }

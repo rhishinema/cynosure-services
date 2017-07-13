@@ -7,40 +7,58 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.cynosure.services.CommonService;
 
 @Entity
-@Table(name="t_event_registration", schema="[cynosure-schema]")
+@Table(name = "t_event_registration", schema = "[cynosure-schema]")
 public class EventRegisteration {
-	
+
 	@Id
 	@GeneratedValue
-	@Column(name="registration_id")
-	private long registerationId;
-	
-	@Column(name="EVENT_ID")
-	private long eventId;
-	
-	@Column(name="person_email")
-	private String personEmail;
-	
-	@Column(name="person_name")
-	private String personName;
-	
-	@Column(name="contact_number")
-	private String contactNumber;
-	
-	@Column(name="amount_charged")
-	private int  amountCharged;
-	
-	@Column(name="regsitration_date")
-	private Timestamp  registrationDate;
+	@Column(name = "registration_id")
+	private long registrationId;
 
-	public long getRegisterationId() {
-		return registerationId;
+	@Column(name = "EVENT_ID")
+	private long eventId;
+
+	@Column(name = "person_email")
+	private String personEmail;
+
+	@Column(name = "person_name")
+	private String personName;
+
+	@Column(name = "contact_number")
+	private String contactNumber;
+
+	@Column(name = "amount_charged")
+	private int amountCharged;
+
+	@Column(name = "regsitration_date")
+	private Timestamp registrationDate;
+
+	@Transient
+	private String registrationDateFormat;
+
+	public String getRegistrationDateFormat() {
+		if (registrationDate != null) {
+			registrationDateFormat = CommonService.getTimeStampStr(registrationDate);
+		}
+		return registrationDateFormat;
 	}
 
-	public void setRegisterationId(long registerationId) {
-		this.registerationId = registerationId;
+	public void setRegistrationDateFormat(String registrationDateFormat) {
+		this.registrationDateFormat = registrationDateFormat;
+	}
+
+	
+	public long getRegistrationId() {
+		return registrationId;
+	}
+
+	public void setRegistrationId(long registrationId) {
+		this.registrationId = registrationId;
 	}
 
 	public long getEventId() {
