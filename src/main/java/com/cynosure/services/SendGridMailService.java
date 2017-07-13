@@ -12,19 +12,21 @@ import org.springframework.stereotype.Component;
 
 import com.cynosure.dao.SubscriberRepository;
 import com.cynosure.pojo.Subscriber;
-import com.cynosure.resources.SubscriptionResource;
 
 @Component("sendGridMailService")
 public class SendGridMailService implements ImailService{
 
 	@Autowired
 	SubscriberRepository subscriberRepository;
+	
+	@Autowired
+	CommonService commonService;
 
 	private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
 	private static final String SMTP_AUTH_USER = "azure_cbcdecab9df232f188cca68f652b4188@azure.com";
 	private static final String SMTP_AUTH_PWD = "Cyno@sure123";
 	
-	public static Logger LOGGER = Logger.getLogger(SubscriptionResource.class);
+	public static Logger LOGGER = Logger.getLogger(SendGridMailService.class);
 
 	@Override
 	public void sendWelcomeMail(String emailId) throws Exception {
@@ -85,13 +87,7 @@ public class SendGridMailService implements ImailService{
 				MimeMessage message = new MimeMessage(mailSession);
 				Multipart multipart = new MimeMultipart("alternative");
 				BodyPart part2 = new MimeBodyPart();
-				part2.setContent(
-						"<HTML><BODY background=\"https://s-media-cache-ak0.pinimg.com/originals/9a/d5/81/9ad5814323154ca643918d58b72b99f5.jpg\">"
-								+ "<font face=\"verdana\" color=\"#800080\"><H1>Welcome To Rhishi's Fan Page!</H1><br><b>Hi There!</b><br><p>We welcome you Rhishi's Fan Page. "
-								+ "You will daily receive updates regarding upcoming events, latest and upcoming movies of Rhishi. You will also get updates regarding Rhishi's "
-								+ "latest range of products.</p></font><div style=\"position:absolute; bottom: 0; left: 600; width: 100px; text-align:right;\">"
-								+ "<a href=\"http://52.170.201.27:8080/v1/subscribers/remove?email=" + emailId
-								+ "\">Unsubscribe</a></div></BODY></HTML>",
+				part2.setContent(commonService.buildHtmlForDailyMail().replace("{emailId}", emailId),
 						"text/html");
 				multipart.addBodyPart(part2);
 				message.setFrom(new InternetAddress("urman.ratneshwar@tcs.com"));
@@ -108,7 +104,7 @@ public class SendGridMailService implements ImailService{
 				transport.close();
 			}
 		}
-		LOGGER.info("Dail mails sent");
+		LOGGER.info("Daily mails sent");
 	}
 
 	private class SMTPAuthenticator extends javax.mail.Authenticator {

@@ -20,24 +20,27 @@ public class MovieQueryBuilder {
 
 	@Autowired
 	private EntityManager entityManager;
-	
-	public List<Movie> getAllMovies(){
+
+	public List<Movie> getAllMovies() {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Movie> query = cb.createQuery(Movie.class);
-		
+
 		Root<Movie> movie = query.from(Movie.class);
-		return entityManager.createQuery(query.select(movie).orderBy(cb.desc(movie.get("releaseDate")))).getResultList();
+		return entityManager.createQuery(query.select(movie).orderBy(cb.desc(movie.get("releaseDate"))))
+				.getResultList();
 	}
-	
-	public List<Movie> getLatestMovies(){
+
+	public List<Movie> getLatestMovies() {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Movie> query = cb.createQuery(Movie.class);
-		
+
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String currDateStr = simpleDateFormat.format(new Date());
-		
+
 		Root<Movie> movie = query.from(Movie.class);
-		return entityManager.createQuery(query.select(movie).where(cb.greaterThanOrEqualTo(movie.get("releaseDate"), 
-				CommonService.getTimeStampFromStr(currDateStr))).orderBy(cb.desc(movie.get("releaseDate")))).getResultList();
+		return entityManager.createQuery(query.select(movie)
+				.where(cb.greaterThanOrEqualTo(movie.get("releaseDate"),
+						CommonService.getTimeStampFromStr(currDateStr)))
+				.orderBy(cb.desc(movie.get("releaseDate")))).setMaxResults(4).getResultList();
 	}
 }

@@ -30,4 +30,8 @@ public class EventService {
 		eventRepository.save(event);
 	}
 
+	public List<Event> getUpcomingEvents() {
+		return eventQueryBuilder.getUpcomingEvents();
+	}
+
 }
