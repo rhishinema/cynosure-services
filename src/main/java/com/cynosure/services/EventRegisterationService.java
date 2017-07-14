@@ -14,10 +14,18 @@ public class EventRegisterationService {
 	private EventRegistrationRepository eventRegistrationRepository;
 
 	@Autowired
+	private MailJetMailService mailJetMailService;
+
+	@Autowired
 	private EventRegistrationQueryBuilder eventRegistrationQueryBuilder;
-	
+
 	public void registerForEvent(EventRegisteration eventRegisteration) {
 		eventRegistrationRepository.save(eventRegisteration);
+		try {
+			mailJetMailService.sendRegistrationMail(eventRegisteration.getPersonEmail());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public EventRegisteration getEventRegistration(long registrationId) {
