@@ -37,8 +37,8 @@ public class MailJetMailService implements ImailService {
 	public void sendWelcomeMail(String emailId) throws Exception {
 
 		String htmlContent = "<HTML><BODY background=\"https://s-media-cache-ak0.pinimg.com/originals/9a/d5/81/9ad5814323154ca643918d58b72b99f5.jpg\">"
-				+ "<font face=\"verdana\" color=\"#800080\"><H1>Welcome To Rhishi's Fan Page!</H1><br><b>Hi There!</b><br><p>We welcome you Rhishi's Fan Page. "
-				+ "You will daily receive updates regarding upcoming events, latest and upcoming movies of Rhishi. You will also get updates regarding Rhishi's "
+				+ "<font face=\"verdana\" color=\"#800080\"><H1>Welcome To Neha's Fan Page!</H1><br><b>Hi There!</b><br><p>We welcome you Neha's Fan Page. "
+				+ "You will daily receive updates regarding upcoming events, latest and upcoming movies of Neha. You will also get updates regarding Neha's "
 				+ "latest range of products.</p></font><div style=\"position:absolute; bottom: 0; left: 600; width: 100px; text-align:right;\">"
 				+ "<a href=\"http://52.170.201.27:8080/v1/subscribers/remove?email=" + emailId
 				+ "\">Unsubscribe</a></div></BODY></HTML>";
